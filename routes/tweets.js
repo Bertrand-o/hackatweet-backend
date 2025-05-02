@@ -13,9 +13,14 @@ router.get('/', (req, res) => {
   })
 })
 
-router.post('/', (req, res) => {
+router.post('/newtweet', (req, res) => {
   const newTweet = new Tweet({
-
+    author: req.body.authorId,
+    date: date.now,
+    text: req.body.text,
+  })
+  newTweet.save().then(data => {
+    res.json({result: true, tweet: data})
   })
 })
 
