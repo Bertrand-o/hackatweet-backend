@@ -13,4 +13,10 @@ router.get('/', (req, res) => {
   })
 })
 
+router.post('/', (req, res) => {
+  const newTweet = new Tweet({
+
+  })
+})
+
 router.delete('/')
