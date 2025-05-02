@@ -12,3 +12,5 @@ router.get('/', (req, res) => {
    }
   })
 })
+
+router.delete('/')
