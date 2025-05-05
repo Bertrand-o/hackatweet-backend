@@ -5,7 +5,7 @@ const Tweet = require("../models/tweets");
 const User = require("../models/users")
 
 router.get('/', (req, res) => {
-  Tweet.find().populate('author').then(data => {
+  Tweet.find().populate('author').populate('likes').then(data => {
    if (data){
     res.json({result: true, tweets: data})
   }  else {
@@ -44,6 +44,24 @@ router.delete('/deletetweet/:tweetId', (req, res)=> {
   })
 })
 
+router.put('/likes/:tweetId', (req, res) => { 
+  User.findOne({token: req.body.token}).then(data => {
+    const userId = data._id
+    Tweet.findById(req.params.tweetId).then(data => {
+      if (!data.likes.includes(userId)) {
+        Tweet.updateOne({_id: req.params.tweetId}, { $push: { likes: userId } })
+        .then(data => {
+          res.json({result: true, tweet: data})
+        })
+      } else {
+        Tweet.updateOne({_id: req.params.tweetId}, { $pull: { likes: userId } })
+        .then(data => {
+          res.json({result: false, tweet: data})
+        })
+      }
+    }); 
+  })
+}); 
 
 router.get('/trend/:trend', (req, res)=> {
 
