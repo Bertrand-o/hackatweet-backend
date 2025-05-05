@@ -63,8 +63,8 @@ router.put('/likes/:tweetId', (req, res) => {
   })
 }); 
 
-router.get('/trend/:trend', (req, res)=> {
-  Tweet.find({ text: { $regex: new RegExp(req.params.trend, '/#(\w+)/gi') }})
+router.get('/trends', (req, res)=> {
+  Tweet.find({ text: { $regex: new RegExp('/#(\w+)/gi') }})
   .then(data => {
     console.log(data)
   })
