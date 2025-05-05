@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
    if (data){
     res.json({result: true, tweets: data})
   }  else {
-    res.jons({result: false, error : "No tweet found"})
+    res.json({result: false, error : "No tweet found"})
    }
   })
 })
