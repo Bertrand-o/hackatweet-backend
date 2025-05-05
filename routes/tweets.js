@@ -75,5 +75,17 @@ router.get('/trends', (req, res)=> {
   })
 })
 
+router.get('/trends/:trend', (req,res) => {
+  const trend = req.params.trend
+  Tweet.find({ text: new RegExp(`#${trend}\\b`)})
+  .then(data => {
+    if (data.length === 0) {
+      res.json({result: false})
+    } else {
+      res.json({result: true, tweets: data})
+    }
+  })
+})
+
 
 module.exports = router
