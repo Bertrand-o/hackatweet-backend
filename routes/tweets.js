@@ -63,17 +63,26 @@ router.put('/likes/:tweetId', (req, res) => {
   })
 }); 
 
-router.get('/trends', (req, res)=> {
-  const pattern = /#\w+/i
-  let trends = []
+router.get('/trends', (req, res) => {
+  const pattern = /#\w+/g; // g = global match for all hashtags
+  let trends = [];
+
   Tweet.find({ text: { $regex: /#\w+/, $options: 'i' } })
-  .then(data => {
-    for (const tweet of data) {
-      trends.push(tweet.text.match(pattern))
-    }
-    res.json({result: true, trends: trends})
-  })
-})
+    .then(data => {
+      for (const tweet of data) {
+        const matches = tweet.text.match(pattern); 
+        if (matches) {
+          trends.push(...matches); 
+        }
+      }
+      const uniqueTrends = [...new Set(trends)];
+
+      res.json({ result: true, trends: uniqueTrends });
+    })
+    .catch(err => {
+      res.json({ result: false, error: err.message });
+    });
+});
 
 router.get('/trends/:trend', (req,res) => {
   const trend = req.params.trend
