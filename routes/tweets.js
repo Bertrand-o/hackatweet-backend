@@ -64,6 +64,10 @@ router.put('/likes/:tweetId', (req, res) => {
 }); 
 
 router.get('/trend/:trend', (req, res)=> {
-
+  Tweet.find({ text: { $regex: new RegExp(req.params.trend, '/#(\w+)/gi') }})
+  .then(data => {
+    console.log(data)
+  })
 })
+
 module.exports = router
