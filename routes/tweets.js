@@ -64,7 +64,7 @@ router.put('/likes/:tweetId', (req, res) => {
 }); 
 
 router.get('/trends', (req, res) => {
-  const pattern = /#\w+/g; // g = global match for all hashtags
+  const pattern = /#\w+/g;
   let trends = [];
 
   Tweet.find({ text: { $regex: /#\w+/, $options: 'i' } })
