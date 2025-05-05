@@ -64,10 +64,16 @@ router.put('/likes/:tweetId', (req, res) => {
 }); 
 
 router.get('/trends', (req, res)=> {
-  Tweet.find({ text: { $regex: new RegExp('/#(\w+)/gi') }})
+  const pattern = /#\w+/i
+  let trends = []
+  Tweet.find({ text: { $regex: /#\w+/, $options: 'i' } })
   .then(data => {
-    console.log(data)
+    for (const tweet of data) {
+      trends.push(tweet.text.match(pattern))
+    }
+    res.json({result: true, trends: trends})
   })
 })
+
 
 module.exports = router
